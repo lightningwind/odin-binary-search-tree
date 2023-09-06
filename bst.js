@@ -14,15 +14,15 @@ class Tree {
   /* Builds a balanced BST from the given array of integers and
   returns the root node. */
   buildTree(array) {
-    array.sort();
-    // TODO: Remove duplicates
+    array.sort((a, b) => a - b); 
+    array = array.filter((e, i, a) => e !== a[i - 1]);
     return this.buildTreeHelper(array, 0, array.length - 1);
   }
 
   /* Builds a balanced BST from the given sorted subarray array[start..end] and
   returns the root node. */
   buildTreeHelper(array, start, end) { // O(n)
-    if (start > end) return null;
+    if (start > end) return null; // Base case
     const mid = parseInt((start + end) / 2);
     const root = new Node(array[mid]);
     root.left = this.buildTreeHelper(array, start, mid - 1);
