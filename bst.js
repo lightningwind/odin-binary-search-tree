@@ -86,20 +86,36 @@ class Tree {
 
       // Find root's in-order successor, which is the left-most node in RST
       let succ = root.right;
-      while (succ.left !== null) {
+      while (succ.left !== null) { // Move down the tree using two pointers
         succParent = succ;
         succ = succ.left;
       }
 
       if (succParent !== root) {
         succParent.left = succ.right;
-      } else { // There is no succ
+      } else { // Successor is root's right child
         succParent.right = succ.right;
       }
 
       root.data = succ.data;
 
       return root;
+    }
+  }
+
+  /* Returns the node with key <value>. Otherwise returns null. */
+  find(value) {
+    return this.findHelper(this.root, value);
+  }
+
+  findHelper(root, key) { // O(h)
+    if (root === null || key === root.data) {
+      return root;
+    }
+    if (key < root.data) {
+      return this.findHelper(root.left, key);
+    } else {
+      return this.findHelper(root.right, key);
     }
   }
 }
@@ -119,7 +135,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // Driver code
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-// prettyPrint(tree.root);
+prettyPrint(tree.root);
 
 const tree2 = new Tree([]);
 tree2.insert(50);
@@ -132,16 +148,18 @@ tree2.insert(80);
 // prettyPrint(tree2.root);
 
 const tree3 = new Tree([50, 30, 20, 40, 70, 60, 80]);
-prettyPrint(tree3.root);
+// prettyPrint(tree3.root);
 
-console.log('Deleting a leaf node: 20');
+// console.log('Deleting a leaf node: 20');
 tree3.delete(20);
-prettyPrint(tree3.root);
+// prettyPrint(tree3.root);
 
-console.log('Deleting a node with a single child: 30');
+// console.log('Deleting a node with a single child: 30');
 tree3.delete(30);
-prettyPrint(tree3.root);
+// prettyPrint(tree3.root);
 
-console.log('Delete the root node: 50');
+// console.log('Delete the root node: 50');
 tree3.delete(50);
-prettyPrint(tree3.root);
+// prettyPrint(tree3.root);
+
+console.log(tree.find(5));
