@@ -32,7 +32,7 @@ class Tree {
 
   /* Inserts a value into a BST by traversing the tree and manipulating nodes and
   their connections. */
-  insert(value) {
+  insert(value) { // O(lgn) where n is the size of this tree in a balanced BST
     if (this.root === null) {
       this.root = new Node(value);
     } else {
@@ -40,6 +40,8 @@ class Tree {
     }
   }
 
+  /* A recursive implementation of insertion. Note that there is an
+  iterative implementation (see CLRS) */
   insertHelper(root, value) { // O(h), where h is the height of the BST
     if (root === null) { // Basis: Tree is empty
       root = new Node(value);
@@ -56,7 +58,49 @@ class Tree {
 
   /* Deletes a node from this BST. */
   delete(value) {
+    this.deleteHelper(this.root, value);
+  }
 
+  /* Deletes the node with key <k> from the BST rooted at node <root>. */
+  deleteHelper(root, k) {
+    if (root === null) { // Base case
+      return root;
+    }
+    if (root.data > k) { // Recurse down the LST
+      root.left = this.deleteHelper(root.left, k);
+      return root;
+    } else if (root.data < k) { // Recurse down the RST
+      root.right = this.deleteHelper(root.right, k);
+      return root;
+    }
+
+    // If we get here, we are deleting node <root>
+
+    if (root.left === null) {
+      return root.right;
+    } else if (root.right === null) {
+      return root.left;
+    } else {
+      // Case: If both children exist
+      let succParent = root;
+
+      // Find root's in-order successor, which is the left-most node in RST
+      let succ = root.right;
+      while (succ.left !== null) {
+        succParent = succ;
+        succ = succ.left;
+      }
+
+      if (succParent !== root) {
+        succParent.left = succ.right;
+      } else { // There is no succ
+        succParent.right = succ.right;
+      }
+
+      root.data = succ.data;
+
+      return root;
+    }
   }
 }
 
@@ -75,7 +119,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // Driver code
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
+// prettyPrint(tree.root);
 
 const tree2 = new Tree([]);
 tree2.insert(50);
@@ -85,4 +129,19 @@ tree2.insert(40);
 tree2.insert(70);
 tree2.insert(60);
 tree2.insert(80);
-prettyPrint(tree2.root);
+// prettyPrint(tree2.root);
+
+const tree3 = new Tree([50, 30, 20, 40, 70, 60, 80]);
+prettyPrint(tree3.root);
+
+console.log('Deleting a leaf node: 20');
+tree3.delete(20);
+prettyPrint(tree3.root);
+
+console.log('Deleting a node with a single child: 30');
+tree3.delete(30);
+prettyPrint(tree3.root);
+
+console.log('Delete the root node: 50');
+tree3.delete(50);
+prettyPrint(tree3.root);
