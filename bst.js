@@ -15,13 +15,13 @@ class Tree {
   returns the root node. */
   buildTree(array) {
     array.sort((a, b) => a - b); 
-    array = array.filter((e, i, a) => e !== a[i - 1]);
+    array = array.filter((e, i, a) => e !== a[i - 1]); // Remove dups
     return this.buildTreeHelper(array, 0, array.length - 1);
   }
 
   /* Builds a balanced BST from the given sorted subarray array[start..end] and
   returns the root node. */
-  buildTreeHelper(array, start, end) { // O(n)
+  buildTreeHelper(array, start, end) { // O(n) time complexity
     if (start > end) return null; // Base case
     const mid = parseInt((start + end) / 2);
     const root = new Node(array[mid]);
@@ -32,7 +32,7 @@ class Tree {
 
   /* Inserts a value into a BST by traversing the tree and manipulating nodes and
   their connections. */
-  insert(value) { // O(lgn) where n is the size of this tree in a balanced BST
+  insert(value) { // O(lgn) time complexity (where n is the size of this tree) in a balanced BST
     if (this.root === null) {
       this.root = new Node(value);
     } else {
@@ -41,8 +41,8 @@ class Tree {
   }
 
   /* A recursive implementation of insertion. Note that there is an
-  iterative implementation (see CLRS) */
-  insertHelper(root, value) { // O(h), where h is the height of the BST
+  iterative implementation which may be more efficient (see CLRS) */
+  insertHelper(root, value) { // O(h) time complexity, where h is the height of the BST
     if (root === null) { // Basis: Tree is empty
       root = new Node(value);
       return root;
@@ -61,8 +61,9 @@ class Tree {
     this.deleteHelper(this.root, value);
   }
 
-  /* Deletes the node with key <k> from the BST rooted at node <root>. */
-  deleteHelper(root, k) {
+  /* Deletes the node with key <k> from the BST rooted at node <root>. 
+  See CLRS for an alternative implementation of deletion. */
+  deleteHelper(root, k) { // O(h) time complexity
     if (root === null) { // Base case
       return root;
     }
@@ -108,7 +109,9 @@ class Tree {
     return this.findHelper(this.root, value);
   }
 
-  findHelper(root, key) { // O(h)
+  /* A recursive implementation of search. Note that there is also an
+  iterative implementation (see CLRS). */
+  findHelper(root, key) { // O(h) time complexity
     if (root === null || key === root.data) {
       return root;
     }
@@ -118,8 +121,26 @@ class Tree {
       return this.findHelper(root.right, key);
     }
   }
+
+  /* Traverses this BST in level order, returning an array of values. */
+  levelOrder() {
+    if (this.root === null) return [];
+    const rs = [];
+    const queue = [];
+    queue.push(this.root);
+
+    while (queue.length !== 0) {
+      const current = queue.shift();
+      rs.push(current.data); // Visit current tree node
+      if (current.left !== null) queue.push(current.left);
+      if (current.right !== null) queue.push(current.right);
+    }
+
+    return rs;
+  }
 }
 
+/* Logs given binary tree in a structured format, where node is the root of the tree. */
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
@@ -134,9 +155,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 // Driver code
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
 
+// Example 1: Initializing a new balanced BST
+const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// prettyPrint(tree.root);
+
+// Example 2: Inserting keys into a BST
 const tree2 = new Tree([]);
 tree2.insert(50);
 tree2.insert(30);
@@ -147,6 +171,7 @@ tree2.insert(60);
 tree2.insert(80);
 // prettyPrint(tree2.root);
 
+// Example 3: Deleting nodes from a BST. 
 const tree3 = new Tree([50, 30, 20, 40, 70, 60, 80]);
 // prettyPrint(tree3.root);
 
@@ -162,4 +187,10 @@ tree3.delete(30);
 tree3.delete(50);
 // prettyPrint(tree3.root);
 
-console.log(tree.find(5));
+// Example 4: Searching a BST
+// console.log(tree.find(5));
+
+// Example 5: Level-order traversal
+const array = tree.levelOrder();
+// prettyPrint(tree.root);
+// console.log(array);
