@@ -138,6 +138,44 @@ class Tree {
 
     return rs;
   }
+
+  /* Performs an inorder tree walk, calling function <fn> each time
+  we visit a node. */
+  inorder(fn) {
+    this.inorderHelper(this.root, fn);
+  }
+
+  inorderHelper(node, fn) {
+    if (node !== null) {
+      this.inorderHelper(node.left, fn);
+      fn(node);
+      this.inorderHelper(node.right, fn);
+    }
+  }
+
+  preorder(fn) {
+    this.preorderHelper(this.root, fn);
+  }
+
+  preorderHelper(node, fn) {
+    if (node !== null) {
+      fn(node);
+      this.preorderHelper(node.left, fn);
+      this.preorderHelper(node.right, fn);
+    }
+  }
+
+  postorder(fn) {
+    this.postorderHelper(this.root, fn);
+  }
+
+  postorderHelper(node, fn) {
+    if (node !== null) {
+      this.postorderHelper(node.left, fn);
+      this.postorderHelper(node.right, fn);
+      fn(node);
+    }
+  }
 }
 
 /* Logs given binary tree in a structured format, where node is the root of the tree. */
@@ -194,3 +232,14 @@ tree3.delete(50);
 const array = tree.levelOrder();
 // prettyPrint(tree.root);
 // console.log(array);
+
+// Example 6: inorder / preorder / postorder
+// prettyPrint(tree.root);
+// console.log("In-order traversal");
+// tree.inorder((node) => console.log(node.data));
+
+// console.log("Pre-order traversal");
+// tree.preorder((node) => console.log(node.data));
+
+// console.log("Post-order traversal");
+// tree.postorder((node) => console.log(node.data));
