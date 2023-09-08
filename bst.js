@@ -176,6 +176,27 @@ class Tree {
       fn(node);
     }
   }
+
+  /* Returns the height of the subtree rooted at node <node>. */
+  height(node) {
+    if (node === null) return -1;
+    if (node.left === null && node.right === null) return 0;
+    return Math.max(this.height(node.left), this.height(node.right)) + 1;
+  }
+
+  depth(node) {
+    // return this.depthHelper(this.root, node);
+  }
+
+  // depthHelper(current, node) {
+  //   if (current === null) {
+  //     return -1;
+  //   }
+  //   if (current === node) {
+  //     return 1;
+  //   }
+
+  // }
 }
 
 /* Logs given binary tree in a structured format, where node is the root of the tree. */
@@ -243,3 +264,7 @@ const array = tree.levelOrder();
 
 // console.log("Post-order traversal");
 // tree.postorder((node) => console.log(node.data));
+
+// Example 7: height
+prettyPrint(tree.root);
+console.log(tree.height(tree.root));
