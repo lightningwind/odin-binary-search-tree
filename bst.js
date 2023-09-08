@@ -188,6 +188,23 @@ class Tree {
   depth(node) { 
     return this.height(this.root) - this.height(node);
   }
+
+  isBalanced() {
+    return this.isBalancedHelper(this.root);
+  }
+
+  /* Returns true iff the tree rooted at node <node> is balanced. */
+  isBalancedHelper(node) { // A naive solution with overlapping subproblems
+    if (node === null || (node.left === null && node.right === null)) { // Base Cases
+      return true;
+    }
+    const heightLST = this.height(node.left);
+    const heightRST = this.height(node.right);
+    if (Math.abs(heightLST - heightRST) > 1) {
+      return false;
+    }
+    return this.isBalancedHelper(node.left) && this.isBalancedHelper(node.right);
+  }
 }
 
 /* Logs given binary tree in a structured format, where node is the root of the tree. */
@@ -261,5 +278,23 @@ const array = tree.levelOrder();
 //console.log(tree.height(tree.root));
 
 // Example 8: depth
-const node = tree.root.right.left;
-console.log(tree.depth(node));
+//const node = tree.root.right.left;
+//console.log(tree.depth(node));
+
+// Example 9: isBalanced
+console.log(tree.isBalanced());
+// console.log(tree3.isBalanced());
+
+// Case: One of the subtrees is not balanced
+// tree.delete(1);
+// tree.delete(3);
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
+
+// Case: The tree itself is not balanced
+// tree.delete(23);
+// tree.delete(6345);
+// tree.delete(9);
+// tree.delete(324);
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
