@@ -178,25 +178,16 @@ class Tree {
   }
 
   /* Returns the height of the subtree rooted at node <node>. */
-  height(node) {
-    if (node === null) return -1;
-    if (node.left === null && node.right === null) return 0;
+  height(node) { // O(n) where n is the number of nodes in the tree
+    if (node === null) return -1; // Base Case: tree is empty
+    if (node.left === null && node.right === null) return 0; // Base Case: leaf node
     return Math.max(this.height(node.left), this.height(node.right)) + 1;
   }
 
-  depth(node) {
-    // return this.depthHelper(this.root, node);
+  /* Returns the depth of the given node with respect to the root node. */
+  depth(node) { 
+    return this.height(this.root) - this.height(node);
   }
-
-  // depthHelper(current, node) {
-  //   if (current === null) {
-  //     return -1;
-  //   }
-  //   if (current === node) {
-  //     return 1;
-  //   }
-
-  // }
 }
 
 /* Logs given binary tree in a structured format, where node is the root of the tree. */
@@ -217,7 +208,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // Example 1: Initializing a new balanced BST
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-// prettyPrint(tree.root);
+prettyPrint(tree.root);
 
 // Example 2: Inserting keys into a BST
 const tree2 = new Tree([]);
@@ -266,5 +257,9 @@ const array = tree.levelOrder();
 // tree.postorder((node) => console.log(node.data));
 
 // Example 7: height
-prettyPrint(tree.root);
-console.log(tree.height(tree.root));
+//prettyPrint(tree.root);
+//console.log(tree.height(tree.root));
+
+// Example 8: depth
+const node = tree.root.right.left;
+console.log(tree.depth(node));
