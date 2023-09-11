@@ -205,6 +205,19 @@ class Tree {
     }
     return this.isBalancedHelper(node.left) && this.isBalancedHelper(node.right);
   }
+
+  /* Re-balances this BST by calling buildTree(). */
+  rebalance() {
+    if (this.isBalanced()) {
+      return;
+    }
+    // Get an array representation of this tree using a traversal method
+    const arr = [];
+    this.inorder((node) => arr.push(node.data));
+
+    // Build a new, balanced tree
+    this.root = this.buildTree(arr);
+  }
 }
 
 /* Logs given binary tree in a structured format, where node is the root of the tree. */
@@ -282,7 +295,7 @@ const array = tree.levelOrder();
 //console.log(tree.depth(node));
 
 // Example 9: isBalanced
-console.log(tree.isBalanced());
+// console.log(tree.isBalanced());
 // console.log(tree3.isBalanced());
 
 // Case: One of the subtrees is not balanced
@@ -298,3 +311,8 @@ console.log(tree.isBalanced());
 // tree.delete(324);
 // prettyPrint(tree.root);
 // console.log(tree.isBalanced());
+
+// Example 10: rebalance (continuing from the previous example)
+// tree.rebalance();
+// console.log("tree now re-balanced:");
+// prettyPrint(tree.root);
