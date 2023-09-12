@@ -211,12 +211,12 @@ class Tree {
     if (this.isBalanced()) {
       return;
     }
-    // Get an array representation of this tree using a traversal method
+    // Step 1: Get a sorted array representation of this unbalanced BST
     const arr = [];
     this.inorder((node) => arr.push(node.data));
 
-    // Build a new, balanced tree
-    this.root = this.buildTree(arr);
+    // Step 2: Build a new, balanced tree
+    this.root = this.buildTreeHelper(arr, 0, arr.length - 1);
   }
 }
 
@@ -233,86 +233,3 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
-
-// Driver code
-
-// Example 1: Initializing a new balanced BST
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
-
-// Example 2: Inserting keys into a BST
-const tree2 = new Tree([]);
-tree2.insert(50);
-tree2.insert(30);
-tree2.insert(20);
-tree2.insert(40);
-tree2.insert(70);
-tree2.insert(60);
-tree2.insert(80);
-// prettyPrint(tree2.root);
-
-// Example 3: Deleting nodes from a BST. 
-const tree3 = new Tree([50, 30, 20, 40, 70, 60, 80]);
-// prettyPrint(tree3.root);
-
-// console.log('Deleting a leaf node: 20');
-tree3.delete(20);
-// prettyPrint(tree3.root);
-
-// console.log('Deleting a node with a single child: 30');
-tree3.delete(30);
-// prettyPrint(tree3.root);
-
-// console.log('Delete the root node: 50');
-tree3.delete(50);
-// prettyPrint(tree3.root);
-
-// Example 4: Searching a BST
-// console.log(tree.find(5));
-
-// Example 5: Level-order traversal
-const array = tree.levelOrder();
-// prettyPrint(tree.root);
-// console.log(array);
-
-// Example 6: inorder / preorder / postorder
-// prettyPrint(tree.root);
-// console.log("In-order traversal");
-// tree.inorder((node) => console.log(node.data));
-
-// console.log("Pre-order traversal");
-// tree.preorder((node) => console.log(node.data));
-
-// console.log("Post-order traversal");
-// tree.postorder((node) => console.log(node.data));
-
-// Example 7: height
-//prettyPrint(tree.root);
-//console.log(tree.height(tree.root));
-
-// Example 8: depth
-//const node = tree.root.right.left;
-//console.log(tree.depth(node));
-
-// Example 9: isBalanced
-// console.log(tree.isBalanced());
-// console.log(tree3.isBalanced());
-
-// Case: One of the subtrees is not balanced
-// tree.delete(1);
-// tree.delete(3);
-// prettyPrint(tree.root);
-// console.log(tree.isBalanced());
-
-// Case: The tree itself is not balanced
-// tree.delete(23);
-// tree.delete(6345);
-// tree.delete(9);
-// tree.delete(324);
-// prettyPrint(tree.root);
-// console.log(tree.isBalanced());
-
-// Example 10: rebalance (continuing from the previous example)
-// tree.rebalance();
-// console.log("tree now re-balanced:");
-// prettyPrint(tree.root);
